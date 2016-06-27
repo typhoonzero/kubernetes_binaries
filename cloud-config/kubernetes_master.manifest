@@ -34,6 +34,7 @@ spec:
         - apiserver
         - --allow-privileged=true
         - --bind-address=0.0.0.0
+        - --insecure-bind-address=0.0.0.0
         - --secure-port=443
         - --etcd-servers=<ETCD_ENDPOINTS>
         - --service-cluster-ip-range=10.100.0.0/24
