@@ -44,17 +44,19 @@ write_files:
       sudo mkdir -p /etc/kubernetes/ssl/
       sudo mkdir -p /etc/kubernetes/addons/
       
-      if [ ! -f /etc/kubernetes/manifests/kubernetes-master.manifest -o ]; then
+      if [ ! -f /etc/kubernetes/manifests/kubernetes-master.manifest ]; then
         echo "Manifests not installed - installing."
 
         # Download config.
-        sudo wget -N -P /etc/kubernetes/manifests/ https://github.com/typhoonzero/kubernetes_binaries/blob/master/kubernetes_master.manifest
-        sudo wget -N -P /etc/kubernetes/addons/ https://github.com/typhoonzero/kubernetes_binaries/blob/master/skydns.yaml
+        sudo wget -N -P /etc/kubernetes/manifests/ https://raw.githubusercontent.com/typhoonzero/kubernetes_binaries/master/cloud-config/kubernetes_master.manifest
+        sudo wget -N -P /etc/kubernetes/addons/ https://raw.githubusercontent.com/typhoonzero/kubernetes_binaries/master/cloud-config/skydns.yaml
       fi
 
       # Insert the master's IP address into the manifest.
       echo "DEFAULT_IPV4: $DEFAULT_IPV4"
       #sudo sed -i -e "s/<MASTER_IPV4>/$DEFAULT_IPV4/g" /etc/kubernetes/manifests/calico-etcd.manifest
+      sudo sed -i -e "s/<ETCD_ENDPOINTS>/<MY_ETCD_ENDPOINTS>/g" /etc/kubernetes/manifests/kubernetes_master.manifest
+      sudo sed -i -e "s/<ETCD_ENDPOINTS>/<MY_ETCD_ENDPOINTS>/g" /etc/kubernetes/manifests/skydns.yaml
 
 coreos:
   update:

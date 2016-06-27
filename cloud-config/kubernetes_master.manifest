@@ -28,7 +28,7 @@ spec:
         path: "/lib64"
   containers: 
     - name: kube-apiserver
-      image: typhoon1986/hyperkube:v1.2.0
+      image: typhoon1986/hyperkube-amd64:v1.2.0
       command: 
         - /hyperkube
         - apiserver
@@ -63,7 +63,7 @@ spec:
           name: "var-run-kubernetes"
 
     - name: kube-controller-manager
-      image: typhoon1986/hyperkube:v1.2.0
+      image: typhoon1986/hyperkube-amd64:v1.2.0
       command:
       - /hyperkube
       - controller-manager
@@ -86,7 +86,7 @@ spec:
         readOnly: true
 
     - name: kube-scheduler
-      image: typhoon1986/hyperkube:v1.2.0
+      image: typhoon1986/hyperkube-amd64:v1.2.0
       command:
       - /hyperkube
       - scheduler
@@ -100,7 +100,7 @@ spec:
         timeoutSeconds: 1
 
     - name: kube-proxy
-      image: typhoon1986/hyperkube:v1.2.0
+      image: typhoon1986/hyperkube-amd64:v1.2.0
       command:
       - /hyperkube
       - proxy
