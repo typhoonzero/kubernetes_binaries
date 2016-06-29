@@ -26,8 +26,7 @@ write_files:
       fi
 
   - path: /etc/flannel/options.env
-    fwner: root
-      si
+    owner: root
     permissions: 0644
     content: |
       FLANNELD_IFACE=${ADVERTISE_IP}
@@ -56,7 +55,7 @@ write_files:
       echo "DEFAULT_IPV4: $DEFAULT_IPV4"
       #sudo sed -i -e "s/<MASTER_IPV4>/$DEFAULT_IPV4/g" /etc/kubernetes/manifests/calico-etcd.manifest
       sudo sed -i -e "s/<ETCD_ENDPOINTS>/<MY_ETCD_ENDPOINTS>/g" /etc/kubernetes/manifests/kubernetes_master.manifest
-      sudo sed -i -e "s/<ETCD_ENDPOINTS>/<MY_ETCD_ENDPOINTS>/g" /etc/kubernetes/manifests/skydns.yaml
+      sudo sed -i -e "s/<ETCD_ENDPOINTS>/<MY_ETCD_ENDPOINTS>/g" /etc/kubernetes/addons/skydns.yaml
 
 coreos:
   update:
@@ -142,12 +141,19 @@ coreos:
         After=kubernetes-install.service docker.service
   
         [Service]
-        ExecStart=/opt/bin/kubelet \
+        Environment=KUBELET_VERSION=v1.2.4_coreos.1
+        ExecStart=/usr/lib/coreos/kubelet-wrapper \
+        --pod_infra_container_image=typhoon1986/pause:2.0 \
         --register-node=false \
+        --api-servers=http://172.24.3.150:8080 \
+        --network-plugin-dir=/etc/kubernetes/cni/net.d \
+        --network-plugin=${NETWORK_PLUGIN} \
+        --register-schedulable=false \
         --allow-privileged=true \
         --config=/etc/kubernetes/manifests \
+        --hostname-override=${DEFAULT_IPV4} \
         --cluster-dns=10.100.0.10 \
-        --cluster_domain=cluster.local \
+        --cluster-domain=cluster.local
         --logtostderr=true
         Restart=always
         RestartSec=10
