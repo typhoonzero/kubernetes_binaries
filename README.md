@@ -37,6 +37,7 @@ Use kubernetes_node_cc.yaml as the cloud config to boot the worker node. Before 
 1. ```<HOSTNAME>```: Hostname for this node (e.g. kube-node1, kube-node2)
 1. ```<SSH_PUBLIC_KEY>```: The public key you will use for SSH access to this server.
 1. ```<KUBERNETES_MASTER>```: The IPv4 address of the Kubernetes master.
+1. ```<MY_ETCD_ENDPOINTS>```: Complete etcd endpoints.
 1. ```<CA_CERT>```: Complete contents of ca.pem
 1. ```<CA_KEY_CERT>```: Complete contents of ca-key.pem
 
